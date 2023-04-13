@@ -3,12 +3,13 @@ import FetchPosts from "./api/api";
 import TurkeyMap from "turkey-map-react";
 import { useState } from "react";
 import { Result } from "@/time";
-import getPosts from "./api/get";
+import Load from "@/public/load.gif";
+import Image from "next/image";
 
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState("Istanbul");
   const { data, isLoading, isError } = useQuery<Result[]>(
-    ["posts", selectedCity], 
+    ["posts", selectedCity],
     () => FetchPosts(turkishToEnglish(selectedCity))
   );
   function turkishToEnglish(str: string) {
@@ -25,7 +26,7 @@ export default function Home() {
     return englishStrArr.join("");
   }
 
-  const [pcity, SetPcity] = useState("");
+  const [pcity, SetPcity] = useState("34-İstanbul");
 
   return (
     <>
@@ -45,6 +46,12 @@ export default function Home() {
         <p className="font-bold text-center  text-lg text-emerald-400">
           {pcity}
         </p>
+        <div className="flex justify-center mt-2">
+          {isLoading && (
+            <Image src={Load} width={200} height={200} alt="load" />
+          )}
+        </div>
+
         <div className="flex justify-around mt-4 px-2">
           {data?.map((item: Result) => (
             <div>{item.vakit}</div>
